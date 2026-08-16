@@ -8,13 +8,12 @@
   ],
   "routes": [
     {
+      "src": "/predict",
+      "dest": "main_backend.py"
+    },
+    {
       "src": "/(.*)",
-      "dest": "main_backend.py",
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
-        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Authorization"
-      }
+      "dest": "main_backend.py"
     }
   ]
 }
