@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Cyber Threat Detector",
+  "version": "1.0",
+  "description": "Ekstensi Pendeteksi Phishing, Judol, dan Threat",
+  "permissions": [
+    "contextMenus",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:5000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
