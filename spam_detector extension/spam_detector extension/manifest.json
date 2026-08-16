@@ -2,11 +2,18 @@
   "manifest_version": 3,
   "name": "Cyber Threat Detector",
   "version": "1.0",
-  "description": "Deteksi ancaman cyber dan spam link",
+  "description": "Deteksi otomatis Phishing, Malware, Judi Online & Pornografi",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "contextMenus"
   ],
+  "host_permissions": [
+    "https://cyber-threat-detector-theta.vercel.app/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html"
   }
