@@ -1,0 +1,52 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+DANGEROUS_KEYWORDS = [
+    "pornhub", "porn", "bokep", "sex", "pornyndex", 
+    "slot", "judi", "gacor", "zeus", "pragmatic", 
+    "phishing", "login-bank", "verify-account", "malware"
+]
+
+@app.route('/predict', methods=['POST', 'OPTIONS'])
+def predict():
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+        return response, 200
+
+    try:
+        data = request.get_json() or {}
+        text = data.get('text', '').lower().strip()
+        
+        if not text:
+            return jsonify({'error': 'Teks tidak boleh kosong'}), 400
+            
+        is_suspicious = any(keyword in text for keyword in DANGEROUS_KEYWORDS)
+        
+        if is_suspicious:
+            return jsonify({
+                'status': 'success',
+                'is_suspicious': True,
+                'prediction': 'SPAM / DANGER',
+                'result_text': 'Terdeteksi konten berbahaya (Pornografi/Judi/Phishing)',
+                'message': 'Terdeteksi konten berbahaya (Pornografi/Judi/Phishing)'
+            })
+        else:
+            return jsonify({
+                'status': 'success',
+                'is_suspicious': False,
+                'prediction': 'CLEAN',
+                'result_text': 'Tidak ditemukan kata kunci judi online, pornografi, maupun indikasi malware/phishing dari database ancaman.',
+                'message': 'Tidak ditemukan kata kunci judi online, pornografi, maupun indikasi malware/phishing dari database ancaman.'
+            })
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run()
